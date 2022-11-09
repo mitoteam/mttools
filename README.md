@@ -1,2 +1,3 @@
 # mttools
-Some cross-project Go tools and helpers
+
+Some MiTo Team's cross-project Go tools and helpers.
