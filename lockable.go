@@ -22,6 +22,6 @@ func (o *Lockable) TryLock() bool {
 	return o.lockMutex.TryLock()
 }
 
-func (o *Lockable) UnLock() {
+func (o *Lockable) Unlock() {
 	o.lockMutex.Unlock()
 }
