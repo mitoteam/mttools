@@ -1,4 +1,3 @@
-// Package app contains main application functionality.
 package mttools
 
 import (
