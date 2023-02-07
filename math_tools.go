@@ -21,3 +21,21 @@ func Int64Sign(value int64) int64 {
 		return 0
 	}
 }
+
+// Absolute value for integer
+func AbsInt(value int) int {
+	if value < 0 {
+		return -value
+	} else {
+		return value
+	}
+}
+
+// Absolute value for integer
+func AbsInt64(value int64) int64 {
+	if value < 0 {
+		return -value
+	} else {
+		return value
+	}
+}
