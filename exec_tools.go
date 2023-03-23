@@ -29,10 +29,14 @@ func ExecCmdWaitPrint(cmd_path string, args []string) error {
 	cmd := exec.Command(cmd_path, args...)
 	//fmt.Println("CMD: " + cmd.String())
 
-	var pipe io.ReadCloser
+	var stdout_pipe, stderr_pipe io.ReadCloser
 	var err error
 
-	if pipe, err = cmd.StdoutPipe(); err != nil {
+	if stdout_pipe, err = cmd.StdoutPipe(); err != nil {
+		return err
+	}
+
+	if stderr_pipe, err = cmd.StderrPipe(); err != nil {
 		return err
 	}
 
@@ -40,11 +44,23 @@ func ExecCmdWaitPrint(cmd_path string, args []string) error {
 		return err
 	}
 
-	scanner := bufio.NewScanner(pipe)
+	stdout_scanner := bufio.NewScanner(stdout_pipe)
+	stderr_scanner := bufio.NewScanner(stderr_pipe)
 
-	for scanner.Scan() {
-		text := scanner.Text()
-		fmt.Println(text)
+	f := true
+	for f {
+		stdout := stdout_scanner.Scan()
+		stderr := stderr_scanner.Scan()
+
+		if stdout {
+			fmt.Println(stdout_scanner.Text())
+		}
+
+		if stderr {
+			fmt.Println(stderr_scanner.Text())
+		}
+
+		f = stdout || stderr
 	}
 
 	return cmd.Wait()
