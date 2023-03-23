@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path"
+	"path/filepath"
 	"text/template"
 
 	_ "embed"
@@ -30,7 +30,7 @@ func IsSystemdAvailable() bool {
 }
 
 func (unit *ServiceData) InstallSystemdService() error {
-	service_unit_filename := path.Join(SystemdServiceDirPath, unit.Name+".service")
+	service_unit_filename := filepath.Join(SystemdServiceDirPath, unit.Name+".service")
 
 	if IsFileExists(service_unit_filename) {
 		return fmt.Errorf(
@@ -96,7 +96,7 @@ func (unit *ServiceData) InstallSystemdService() error {
 }
 
 func (unit *ServiceData) UninstallSystemdService() error {
-	service_unit_filename := path.Join(SystemdServiceDirPath, unit.Name+".service")
+	service_unit_filename := filepath.Join(SystemdServiceDirPath, unit.Name+".service")
 
 	if !IsFileExists(service_unit_filename) {
 		return fmt.Errorf(
