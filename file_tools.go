@@ -2,6 +2,7 @@ package mttools
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -56,4 +57,19 @@ func GetDirAbsolutePath(path string) (abs_path string, err error) {
 	}
 
 	return
+}
+
+// Convert fille size to human-readable string
+func FormatFileSize(size int64) string {
+	if size > 1024*1024*1024*1024 {
+		return fmt.Sprintf("%.2fTb", float64(size)/(1024*1024*1024*1024))
+	} else if size > 1024*1024*1024 {
+		return fmt.Sprintf("%2.2fGb", float64(size)/(1024*1024*1024))
+	} else if size > 1024*1024 {
+		return fmt.Sprintf("%2.2fMb", float64(size)/(1024*1024))
+	} else if size > 1024 {
+		return fmt.Sprintf("%2.2fKb", float64(size)/1024)
+	}
+
+	return fmt.Sprintf("%db", size)
 }
