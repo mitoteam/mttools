@@ -51,7 +51,7 @@ func SplitArgumentsString(str string) []string {
 	str = strings.TrimSpace(str)
 
 	// \p{L} = any unicode letter
-	re := regexp.MustCompile(`([\p{L}\d_\-\+\@\|!]+)|(".*?[^\\]")|("")`)
+	re := regexp.MustCompile(`([\p{L}\d_\-\+\@\|\!\/]+)|(".*?[^\\]")|("")`)
 
 	result := re.FindAllString(str, -1) //-1 = all
 
