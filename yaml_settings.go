@@ -69,7 +69,14 @@ func SaveYamlSettingToFile(path string, comment string, settings interface{}) er
 
 func settingsOptionYamlComment(r reflect.Type, yaml_field string) string {
 	for i := 0; i < r.NumField(); i++ {
-		tag := r.Field(i).Tag.Get("yaml")
+		field := r.Field(i)
+
+		if field.Type.Kind() == reflect.Struct {
+			//embedded struct, need recursion
+			return settingsOptionYamlComment(field.Type, yaml_field)
+		}
+
+		tag := field.Tag.Get("yaml")
 
 		if tag == "" {
 			tag = strings.ToLower(r.Field(i).Name)
