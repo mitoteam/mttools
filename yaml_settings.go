@@ -73,7 +73,11 @@ func settingsOptionYamlComment(r reflect.Type, yaml_field string) string {
 
 		if field.Type.Kind() == reflect.Struct {
 			//embedded struct, need recursion
-			return settingsOptionYamlComment(field.Type, yaml_field)
+			comment := settingsOptionYamlComment(field.Type, yaml_field)
+
+			if comment != "" {
+				return comment
+			}
 		}
 
 		tag := field.Tag.Get("yaml")
