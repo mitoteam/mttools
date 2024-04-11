@@ -41,7 +41,7 @@ func SaveYamlSettingToFile(path string, comment string, settings interface{}) er
 
 	//setting header comment
 	node_yaml.HeadComment = strings.ReplaceAll(comment, "\n", "\n# ") +
-		"\n# Created on: " + time.Now().Format(time.RFC3339) +
+		"\n# Saved on: " + time.Now().Format(time.RFC3339) +
 		"\n#\n\n"
 
 	//adding comments
