@@ -6,7 +6,6 @@ import (
 	"io"
 	"os/exec"
 	"runtime"
-	"syscall"
 )
 
 // Executes cmd and returns its output or err
@@ -77,20 +76,7 @@ func ExecCmdWaitAndPrint(cmd_path string, args []string) (output string, err err
 // Thanks to SyncThing!
 // https://github.com/syncthing/syncthing/blob/main/lib/osutil/hidden_windows.go
 func HideConsole() {
-	if !IsWindows() {
-		return
-	}
-
-	//import WinAPI function
-	getConsoleWindowF := syscall.NewLazyDLL("kernel32.dll").NewProc("GetConsoleWindow")
-	showWindowF := syscall.NewLazyDLL("user32.dll").NewProc("ShowWindow")
-
-	if getConsoleWindowF.Find() == nil && showWindowF.Find() == nil {
-		hwnd, _, _ := getConsoleWindowF.Call()
-		if hwnd != 0 {
-			showWindowF.Call(hwnd, 0 /* 0 = hide */)
-		}
-	}
+	hideConsoleHelper()
 }
 
 func IsWindows() bool {
