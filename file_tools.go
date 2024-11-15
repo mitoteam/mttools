@@ -1,8 +1,10 @@
 package mttools
 
 import (
+	"crypto/sha256"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 )
@@ -72,4 +74,23 @@ func FormatFileSize(size int64) string {
 	}
 
 	return fmt.Sprintf("%db", size)
+}
+
+func FileSha256(path string) (string, error) {
+	if !IsFileExists(path) {
+		return "", errors.New(fmt.Sprintf("Inaccessible file: %s", path))
+	}
+
+	f, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+
+	h := sha256.New()
+	if _, err := io.Copy(h, f); err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%x", h.Sum(nil)), nil
 }
