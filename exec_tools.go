@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"syscall"
 )
 
 // Executes cmd and returns its output or err
@@ -68,4 +69,19 @@ func ExecCmdWaitAndPrint(cmd_path string, args []string) (output string, err err
 	}
 
 	return output, cmd.Wait()
+}
+
+// Hides console only under Windows)
+//
+// Thanks to SyncThing!
+// https://github.com/syncthing/syncthing/blob/main/lib/osutil/hidden_windows.go
+func HideConsole() {
+	getConsoleWindow := syscall.NewLazyDLL("kernel32.dll").NewProc("GetConsoleWindow")
+	showWindow := syscall.NewLazyDLL("user32.dll").NewProc("ShowWindow")
+	if getConsoleWindow.Find() == nil && showWindow.Find() == nil {
+		hwnd, _, _ := getConsoleWindow.Call()
+		if hwnd != 0 {
+			showWindow.Call(hwnd, 0)
+		}
+	}
 }
