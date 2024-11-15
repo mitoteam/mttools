@@ -25,43 +25,47 @@ func ExecCmdPrint(cmd_path string, args []string) error {
 }
 
 // Executes cmd printing its output to stdout during execution
-func ExecCmdWaitPrint(cmd_path string, args []string) error {
+func ExecCmdWaitAndPrint(cmd_path string, args []string) (output string, err error) {
 	cmd := exec.Command(cmd_path, args...)
 	//fmt.Println("CMD: " + cmd.String())
 
 	var stdout_pipe, stderr_pipe io.ReadCloser
-	var err error
 
 	if stdout_pipe, err = cmd.StdoutPipe(); err != nil {
-		return err
+		return "", err
 	}
 
 	if stderr_pipe, err = cmd.StderrPipe(); err != nil {
-		return err
+		return "", err
 	}
 
 	if err = cmd.Start(); err != nil {
-		return err
+		return "", err
 	}
 
 	stdout_scanner := bufio.NewScanner(stdout_pipe)
 	stderr_scanner := bufio.NewScanner(stderr_pipe)
 
 	f := true
+	var text string
 	for f {
 		stdout := stdout_scanner.Scan()
 		stderr := stderr_scanner.Scan()
 
 		if stdout {
-			fmt.Println(stdout_scanner.Text())
+			text = stdout_scanner.Text()
+			fmt.Println(text)
+			output += text + "\n"
 		}
 
 		if stderr {
-			fmt.Println(stderr_scanner.Text())
+			text = stderr_scanner.Text()
+			fmt.Println(text)
+			output += text + "\n"
 		}
 
 		f = stdout || stderr
 	}
 
-	return cmd.Wait()
+	return output, cmd.Wait()
 }
