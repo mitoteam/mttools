@@ -3,6 +3,7 @@ package mttools
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"runtime"
@@ -46,6 +47,29 @@ func ExecCmdWaitAndPrint(cmd_path string, args []string) (output string, err err
 	output = sb.String()
 
 	return output, err
+}
+
+// Executes whole string in command-line shell
+func ExecCommandLine(command_line string, print bool) error {
+	var cmd_path string
+	var args []string
+
+	if IsWindows() {
+		cmd_path = "cmd.exe"
+		args = []string{"/C", command_line}
+	} else if IsLinux() {
+		cmd_path = "sh"
+		args = []string{"-c", command_line}
+	} else {
+		log.Panicln("Unknown platform in ExecCommandLine()")
+	}
+
+	if print {
+		return ExecCmdPrint(cmd_path, args)
+	} else {
+		_, err := ExecCmd(cmd_path, args)
+		return err
+	}
 }
 
 // Hides console only under Windows)
