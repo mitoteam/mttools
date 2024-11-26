@@ -11,6 +11,7 @@ const allLetters = lowerLetters + upperLetters
 const allSymbols = numbers + allLetters
 
 // Returns random string of given length.
+// NOT cryptographically strong!
 // https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
 func RandomString(length int) string {
 	buffer := make([]byte, length)
@@ -23,6 +24,7 @@ func RandomString(length int) string {
 }
 
 // Returns random letter.
+// NOT cryptographically strong!
 func RandomLetter(upperOnly bool) string {
 	var list string
 	if upperOnly {
