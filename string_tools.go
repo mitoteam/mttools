@@ -11,6 +11,9 @@ import (
 // https://stackoverflow.com/questions/72267243/unioning-an-interface-with-a-type-in-golang
 func AnyToStringOk(v any) (s string, b bool) {
 	switch v := v.(type) {
+	case nil:
+		s = ""
+
 	case string:
 		s = v
 
