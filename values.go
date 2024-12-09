@@ -15,8 +15,9 @@ func NewValues() Values {
 	}
 }
 
-func (m *Values) Set(key string, v any) {
+func (m *Values) Set(key string, v any) *Values {
 	m.list[key] = v
+	return m
 }
 
 func (m *Values) GetOk(key string) (v any, ok bool) {
