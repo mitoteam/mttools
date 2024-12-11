@@ -15,6 +15,12 @@ func NewValues() Values {
 	}
 }
 
+func (m *Values) CopyFrom(another Values) {
+	//clear by creating new empty map
+	m.list = make(map[string]any, 0)
+	maps.Copy(m.list, another.list)
+}
+
 func (m *Values) Set(key string, v any) *Values {
 	m.list[key] = v
 	return m
