@@ -15,12 +15,26 @@ func AnyToInt64Ok(v any) (int64, bool) {
 		return i, true
 
 	case int32:
+		return int64(i), true
+
 	case uint32:
+		return int64(i), true
+
 	case int16:
+		return int64(i), true
+
 	case uint16:
+		return int64(i), true
+
 	case int8:
+		return int64(i), true
+
 	case uint8:
+		return int64(i), true
+
 	case int:
+		return int64(i), true
+
 	case uint:
 		return int64(i), true
 
