@@ -98,3 +98,28 @@ func SplitArgumentsString(str string) []string {
 
 	return result
 }
+
+// Returns true if v value considered as empty (nil, "", 0 for ints, 0.0 for floats).
+func IsEmpty(v any) bool {
+	if v == nil {
+		return true
+	}
+
+	if v, ok := v.(float64); ok {
+		return v == 0.0
+	}
+
+	if v, ok := v.(float32); ok {
+		return v == 0.0
+	}
+
+	if v, ok := AnyToInt64Ok(v); ok {
+		return v == 0
+	}
+
+	if v, ok := AnyToStringOk(v); ok {
+		return v == ""
+	}
+
+	return false
+}
