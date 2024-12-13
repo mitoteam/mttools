@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -19,6 +20,36 @@ func AnyToStringOk(v any) (s string, b bool) {
 
 	case fmt.Stringer:
 		s = v.String()
+
+	case uint64:
+		s = strconv.FormatUint(v, 10)
+
+	case uint32:
+		s = strconv.FormatUint(uint64(v), 10)
+
+	case uint16:
+		s = strconv.FormatUint(uint64(v), 10)
+
+	case uint8:
+		s = strconv.FormatUint(uint64(v), 10)
+
+	case uint:
+		s = strconv.FormatUint(uint64(v), 10)
+
+	case int64:
+		s = strconv.FormatInt(v, 10)
+
+	case int32:
+		s = strconv.FormatInt(int64(v), 10)
+
+	case int16:
+		s = strconv.FormatInt(int64(v), 10)
+
+	case int8:
+		s = strconv.FormatInt(int64(v), 10)
+
+	case int:
+		s = strconv.FormatInt(int64(v), 10)
 
 	default:
 		// handle the remaining type set of ~string
