@@ -14,6 +14,16 @@ func AnyToInt64Ok(v any) (int64, bool) {
 	case int64:
 		return i, true
 
+	case int32:
+	case uint32:
+	case int16:
+	case uint16:
+	case int8:
+	case uint8:
+	case int:
+	case uint:
+		return int64(i), true
+
 	default:
 		// handle the remaining type set of ~int64
 		r := reflect.ValueOf(v)
