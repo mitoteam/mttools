@@ -108,6 +108,10 @@ func IsEmpty(v any) bool {
 		return true
 	}
 
+	if v, ok := v.(bool); ok {
+		return v
+	}
+
 	if v, ok := v.(float64); ok {
 		return v == 0.0
 	}
