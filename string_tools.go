@@ -51,6 +51,9 @@ func AnyToStringOk(v any) (s string, b bool) {
 	case int:
 		s = strconv.FormatInt(int64(v), 10)
 
+	case bool:
+		s = strconv.FormatBool(v)
+
 	default:
 		// handle the remaining type set of ~string
 		r := reflect.ValueOf(v)
