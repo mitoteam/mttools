@@ -102,14 +102,14 @@ func SplitArgumentsString(str string) []string {
 	return result
 }
 
-// Returns true if v value considered as empty (nil, "", 0 for ints, 0.0 for floats).
+// Returns true if v value considered as empty (nil, "", 0 for int, 0.0 for float, false for bool).
 func IsEmpty(v any) bool {
 	if v == nil {
 		return true
 	}
 
 	if v, ok := v.(bool); ok {
-		return v
+		return !v
 	}
 
 	if v, ok := v.(float64); ok {
