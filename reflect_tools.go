@@ -43,3 +43,9 @@ func IsStructTypeEmbeds(s_type reflect.Type, embedded_type reflect.Type) bool {
 
 	return false
 }
+
+// One-liner to get pointer to function returned value.
+// Example: pointer_t := mttools.Ptr(time.Now()) // you can not do pointer_t := &time.Now()
+func Ptr[T any](v T) *T {
+	return &v
+}
