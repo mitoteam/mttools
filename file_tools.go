@@ -78,7 +78,7 @@ func FormatFileSize(size int64) string {
 
 func FileSha256(path string) (string, error) {
 	if !IsFileExists(path) {
-		return "", errors.New(fmt.Sprintf("Inaccessible file: %s", path))
+		return "", fmt.Errorf("Inaccessible file: %s", path)
 	}
 
 	f, err := os.Open(path)
