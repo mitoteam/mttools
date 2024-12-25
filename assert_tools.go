@@ -1,31 +1,39 @@
 package mttools
 
-func AssertNil(v any) {
+func AssertNil(v any, message ...string) {
 	if v != nil {
-		panic("AssertNil failed")
+		panic(messageFromArgs("AssertNil failed", message))
 	}
 }
 
-func AssertNotNil(v any) {
+func AssertNotNil(v any, message ...string) {
 	if v == nil {
-		panic("AssertNotNil failed")
+		panic(messageFromArgs("AssertNotNil failed", message))
 	}
 }
 
-func AssertEmpty(v any) {
+func AssertEmpty(v any, message ...string) {
 	if !IsEmpty(v) {
-		panic("AssertEmpty failed")
+		panic(messageFromArgs("AssertEmpty failed", message))
 	}
 }
 
-func AssertNotEmpty(v any) {
+func AssertNotEmpty(v any, message ...string) {
 	if IsEmpty(v) {
-		panic("AssertNotEmpty failed")
+		panic(messageFromArgs("AssertNotEmpty failed", message))
 	}
 }
 
-func AssertEqual[T comparable](a T, b T) {
+func AssertEqual[T comparable](a T, b T, message ...string) {
 	if a != b {
-		panic("AssertEqual failed")
+		panic(messageFromArgs("AssertEqual failed", message))
+	}
+}
+
+func messageFromArgs(defaultMessage string, messageArgs []string) string {
+	if len(messageArgs) > 0 {
+		return messageArgs[0]
+	} else {
+		return defaultMessage
 	}
 }
