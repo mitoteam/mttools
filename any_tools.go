@@ -21,6 +21,9 @@ func AnyToStringOk(v any) (s string, b bool) {
 	case fmt.Stringer:
 		s = v.String()
 
+	case error:
+		s = v.Error()
+
 	case uint64:
 		s = strconv.FormatUint(v, 10)
 
