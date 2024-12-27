@@ -15,11 +15,11 @@ func CallerSignature(skip int) string {
 	return "[unknown caller]"
 }
 
-func PanicWithSignature(message string) string {
+func PanicWithSignature(message any) string {
 	s := CallerSignature(2)
 
-	if len(message) > 0 {
-		s += ": " + message
+	if !IsEmpty(message) {
+		s += ": " + AnyToString(message)
 	}
 
 	panic(s)
