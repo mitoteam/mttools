@@ -53,3 +53,13 @@ func SlicesIntersection[S ~[]E, E comparable](slice_a S, slice_b S) S {
 
 	return result
 }
+
+// Returns new slice of same size and type, each element is result of calling fn() function.
+func SliceWalk[S ~[]E, E any](originalSlice S, fn func(E) E) S {
+	resultSlice := make(S, len(originalSlice))
+
+	for index, value := range originalSlice {
+		resultSlice[index] = fn(value)
+	}
+	return resultSlice
+}
