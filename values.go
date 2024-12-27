@@ -21,16 +21,20 @@ func (m *Values) CopyFrom(another *Values) {
 	maps.Copy(m.list, another.list)
 }
 
+// Sets value
 func (m *Values) Set(key string, v any) *Values {
 	m.list[key] = v
 	return m
 }
 
+// Gets value by key, returns ok=false if there is no such key.
 func (m *Values) GetOk(key string) (v any, ok bool) {
 	v, ok = m.list[key]
 	return v, ok
 }
 
+// Gets value by key, returns nil if there is no such key.
+// Use GetOk() if you need distinguish nil values from key absence.
 func (m *Values) Get(key string) any {
 	if v, ok := m.GetOk(key); ok {
 		return v
