@@ -35,7 +35,7 @@ func IsStructTypeEmbeds(s_type reflect.Type, embedded_type reflect.Type) bool {
 
 		//recursion
 		if struct_field.Type.Kind() == reflect.Struct {
-			if IsStructEmbeds(struct_field.Type, embedded_type) {
+			if IsStructTypeEmbeds(struct_field.Type, embedded_type) {
 				return true
 			}
 		}
