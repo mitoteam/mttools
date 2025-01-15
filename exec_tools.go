@@ -49,8 +49,8 @@ func ExecCmdWaitAndPrint(cmd_path string, args []string) (output string, err err
 	return output, err
 }
 
-// Executes whole string in command-line shell
-func ExecCommandLine(command_line string, print bool) error {
+// Executes whole string in command-line shell. Returns its output and/or error.
+func ExecCommandLine(command_line string) (string, error) {
 	var cmd_path string
 	var args []string
 
@@ -64,15 +64,10 @@ func ExecCommandLine(command_line string, print bool) error {
 		log.Panicln("Unknown platform in ExecCommandLine()")
 	}
 
-	if print {
-		return ExecCmdPrint(cmd_path, args)
-	} else {
-		_, err := ExecCmd(cmd_path, args)
-		return err
-	}
+	return ExecCmd(cmd_path, args)
 }
 
-// Hides console only under Windows)
+// Hides console (only under Windows)
 //
 // Thanks to SyncThing!
 // https://github.com/syncthing/syncthing/blob/main/lib/osutil/hidden_windows.go
