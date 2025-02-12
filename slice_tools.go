@@ -17,6 +17,16 @@ func CountValues(value interface{}, values_list ...interface{}) (count int) {
 	return count
 }
 
+// Returns true if needle is in slice (like PHP's in_array() function).
+func InSlice[E comparable, S ~[]E](needle E, slice S) bool {
+	for _, value := range slice {
+		if needle == value {
+			return true
+		}
+	}
+	return false
+}
+
 // Returns slice of same type with just unique elements left in it
 func UniqueSlice[S ~[]E, E any](slice S) S {
 	unique_map := make(map[string]bool, len(slice))
