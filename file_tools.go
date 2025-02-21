@@ -39,7 +39,27 @@ func IsDirExists(path string) bool {
 	return true
 }
 
-// Returns absolute path for directory. If `path` is "" current working directory is used.
+// Returns true if directory is empty. Directory should exist and be accessible (permissions).
+func IsDirEmpty(path string) (bool, error) {
+	if !IsDirExists(path) {
+		return false, fmt.Errorf("directory '%s' does not exist or not accessible", path)
+	}
+
+	f, err := os.Open(path)
+	if err != nil {
+		return false, err
+	}
+	defer f.Close()
+
+	_, err = f.Readdirnames(1)
+	if err == io.EOF { //nothing in list
+		return true, nil
+	}
+
+	return false, err // Something in list or error occurred
+}
+
+// Returns absolute path for directory. If `path` is "" current working directory is used. Checks if directory exists.
 func GetDirAbsolutePath(path string) (abs_path string, err error) {
 	abs_path = path
 
