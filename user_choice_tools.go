@@ -2,12 +2,14 @@ package mttools
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 )
 
+// Prints options list and asks user for choice in console. Multiple options can be chosen.
 func AskUserChoiceMultiple(prompt string, options_list []string, unique bool) (choice_list []int, err error) {
 	choice_list, err = _askUser(prompt, options_list)
 
@@ -15,6 +17,22 @@ func AskUserChoiceMultiple(prompt string, options_list []string, unique bool) (c
 		return UniqueSlice(choice_list), err
 	} else {
 		return choice_list, err
+	}
+}
+
+// Prints options list and asks user for choice in console. First chosen option is returned. -1 returned if nothing was selected or error occurred.
+func AskUserChoiceSingle(prompt string, options_list []string) (choice int, err error) {
+	var choice_list []int
+	choice_list, err = _askUser(prompt, options_list)
+
+	if err != nil {
+		return -1, err
+	}
+
+	if len(choice_list) > 0 {
+		return choice_list[0], nil
+	} else {
+		return -1, errors.New("nothing selected")
 	}
 }
 
