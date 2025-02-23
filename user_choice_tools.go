@@ -8,14 +8,25 @@ import (
 	"strings"
 )
 
-func AskUserChoiceMultiple(prompt string, options_list []string) (choice_list []int, err error) {
+func AskUserChoiceMultiple(prompt string, options_list []string, unique bool) (choice_list []int, err error) {
+	choice_list, err = _askUser(prompt, options_list)
+
+	if unique {
+		return UniqueSlice(choice_list), err
+	} else {
+		return choice_list, err
+	}
+}
+
+func _askUser(prompt string, options_list []string) (user_input []int, err error) {
+	// Print options and prompt
 	for k, v := range options_list {
 		fmt.Printf("%2d: %s\n", k+1, v)
 	}
 
-	//Ask user
 	fmt.Print("*** " + prompt)
 
+	//Ask user
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 
@@ -25,17 +36,17 @@ func AskUserChoiceMultiple(prompt string, options_list []string) (choice_list []
 	}
 
 	// Preprocess
-	user_input := strings.TrimSpace(scanner.Text())
-	user_input = strings.ReplaceAll(user_input, ",", " ")
+	user_input_string := strings.TrimSpace(scanner.Text())
+	user_input_string = strings.ReplaceAll(user_input_string, ",", " ")
 
-	number_string_list := strings.Split(user_input, " ")
+	number_string_list := strings.Split(user_input_string, " ")
 
-	if len(user_input) == 0 {
+	if len(user_input_string) == 0 {
 		return []int{}, nil //empty slice
 	}
 
 	// Set answers to slice
-	choice_list = make([]int, 0, len(number_string_list))
+	user_input = make([]int, 0, len(number_string_list))
 
 	for _, v := range number_string_list {
 		if len(v) < 1 {
@@ -44,15 +55,15 @@ func AskUserChoiceMultiple(prompt string, options_list []string) (choice_list []
 
 		n, err := strconv.Atoi(v)
 		if err != nil {
-			return choice_list, fmt.Errorf("wrong input: %s (%s)", v, err.Error())
+			return user_input, fmt.Errorf("wrong input: %s (%s)", v, err.Error())
 		}
 
 		if n < 1 || n > len(options_list) {
 			continue
 		}
 
-		choice_list = append(choice_list, n-1)
+		user_input = append(user_input, n-1)
 	}
 
-	return UniqueSlice(choice_list), nil
+	return user_input, nil
 }
