@@ -10,6 +10,7 @@ import (
 )
 
 // Prints options list and asks user for choice in console. Multiple options can be chosen.
+// Input of single "0" (zero) means "Cancel" and [-1] slice returned
 func AskUserChoiceMultiple(prompt string, options_list []string, unique bool) (choice_list []int, err error) {
 	choice_list, err = _askUser(prompt, options_list)
 
@@ -65,6 +66,11 @@ func _askUser(prompt string, options_list []string) (user_input []int, err error
 
 	// Set answers to slice
 	user_input = make([]int, 0, len(number_string_list))
+
+	// user cancelled selection
+	if len(number_string_list) == 1 && number_string_list[0] == "0" {
+		return []int{-1}, nil
+	}
 
 	for _, v := range number_string_list {
 		if len(v) < 1 {
