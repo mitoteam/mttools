@@ -2,7 +2,6 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/mitoteam/mttools.svg)](https://pkg.go.dev/github.com/mitoteam/mttools)
 ![GitHub code size](https://img.shields.io/github/languages/code-size/mitoteam/mttools)
-[![Go Report Card](https://goreportcard.com/badge/github.com/mitoteam/mttools)](https://goreportcard.com/report/github.com/mitoteam/mttools)
 ![GitHub](https://img.shields.io/github/license/mitoteam/mttools)
 
 [![GitHub Version](https://img.shields.io/github/v/release/mitoteam/mttools?logo=github)](https://github.com/mitoteam/mttools)
