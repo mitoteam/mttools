@@ -81,7 +81,51 @@ func GetDirAbsolutePath(path string) (abs_path string, err error) {
 	return
 }
 
-// Convert fille size to human-readable string
+// Checks if the given path is a valid file path for creating a new file.
+// It checks for empty paths, existing files or directories, and the existence of the parent directory.
+func ValidateNewFilePath(pathStr string) error {
+	// Clean the path and check if it's empty
+	if pathStr == "" {
+		return errors.New("path cannot be empty")
+	}
+
+	// Make it absolute
+	absPath, err := filepath.Abs(pathStr)
+	if err != nil {
+		return fmt.Errorf("invalid path syntax: %w", err)
+	}
+
+	// Check if a file or directory already exists at that path
+	_, err = os.Stat(absPath)
+	if err == nil {
+		return errors.New("file or directory at this path already exists")
+	}
+
+	// If the error is not "not exists", then there are permission issues
+	if !os.IsNotExist(err) {
+		return fmt.Errorf("error checking path: %w", err)
+	}
+
+	// Check the existence of the parent directory
+	dir := filepath.Dir(absPath)
+	dirStat, err := os.Stat(dir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return errors.New("parent directory does not exist")
+		}
+
+		return fmt.Errorf("error checking parent directory: %w", err)
+	}
+
+	// Check that the parent object is indeed a directory, not a file
+	if !dirStat.IsDir() {
+		return errors.New("parent path is not a directory")
+	}
+
+	return nil
+}
+
+// Convert file size to human-readable string
 func FormatFileSize(size int64) string {
 	if size > 1024*1024*1024*1024 {
 		return fmt.Sprintf("%.2fTb", float64(size)/(1024*1024*1024*1024))
