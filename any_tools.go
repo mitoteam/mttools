@@ -80,6 +80,67 @@ func AnyToString(v any) string {
 	return fmt.Sprintf("%v", v)
 }
 
+// Convert any value to int. Ok = true if it was converted.
+func AnyToIntOk(v any) (int, bool) {
+	switch i := v.(type) {
+	case nil:
+		return 0, false
+
+	case int:
+		return i, true
+
+	case int32:
+		return int(i), true
+
+	case uint32:
+		return int(i), true
+
+	case int16:
+		return int(i), true
+
+	case uint16:
+		return int(i), true
+
+	case int8:
+		return int(i), true
+
+	case uint8:
+		return int(i), true
+
+	case int64:
+		return int(i), true
+
+	case uint:
+		return int(i), true
+
+	default:
+		// handle the remaining type set of ~int64
+		r := reflect.ValueOf(v)
+		if r.CanInt() {
+			return int(r.Int()), true
+		} else {
+			//try to cast it to string and then parse it
+			if s, ok := AnyToStringOk(v); ok {
+				if i, err := strconv.Atoi(s); err == nil {
+					return i, true
+				}
+			}
+		}
+	}
+
+	//not even a string...
+	return 0, false
+}
+
+// Try best to convert any value to int. Returns 0 if value can not be converted.
+func AnyToIntOrZero(v any) int {
+	if i, ok := AnyToIntOk(v); ok {
+		return i
+	}
+
+	return 0
+}
+
 // Convert any value to Int64. Ok = true if it was converted
 func AnyToInt64Ok(v any) (int64, bool) {
 	switch i := v.(type) {
