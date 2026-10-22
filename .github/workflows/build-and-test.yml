@@ -1,0 +1,15 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  call-shared-workflow:
+    uses: mitoteam/shared-actions/.github/workflows/go-pkg-test.yml@main
+    secrets: inherit
+    permissions:
+      contents: write
