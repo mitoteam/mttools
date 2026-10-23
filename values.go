@@ -33,24 +33,24 @@ func (m *Values) CopyFrom(another *Values) {
 }
 
 // Sets value
-func (m *Values) Set(key string, v any) *Values {
+func (m *Values) Set(key any, v any) *Values {
 	m.Lock()
-	m.list.Set(key, v)
+	m.list.Set(AnyToString(key), v)
 	m.Unlock()
 	return m
 }
 
 // Gets value by key, returns ok=false if there is no such key.
-func (m *Values) GetOk(key string) (v any, ok bool) {
+func (m *Values) GetOk(key any) (v any, ok bool) {
 	m.Lock()
-	v, ok = m.list.Get(key)
+	v, ok = m.list.Get(AnyToString(key))
 	m.Unlock()
 	return v, ok
 }
 
 // Gets value by key, returns nil if there is no such key.
 // Use GetOk() if you need distinguish nil values from key absence.
-func (m *Values) Get(key string) any {
+func (m *Values) Get(key any) any {
 	if v, ok := m.GetOk(key); ok {
 		return v
 	}
@@ -59,8 +59,8 @@ func (m *Values) Get(key string) any {
 }
 
 // Returns true if value for key was set.
-func (m *Values) Has(key string) bool {
-	return m.list.Has(key)
+func (m *Values) Has(key any) bool {
+	return m.list.Has(AnyToString(key))
 }
 
 func (m *Values) GetNamesIterator() iter.Seq[string] {
