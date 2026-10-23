@@ -19,6 +19,13 @@ func NewValues() Values {
 	}
 }
 
+// Values with initial capacity given
+func NewValuesC(capacity int) Values {
+	return Values{
+		list: orderedmap.NewOrderedMapWithCapacity[string, any](capacity),
+	}
+}
+
 func (m *Values) CopyFrom(another *Values) {
 	m.Lock()
 	m.list = another.list.Copy()
@@ -58,4 +65,8 @@ func (m *Values) Has(key string) bool {
 
 func (m *Values) GetNamesIterator() iter.Seq[string] {
 	return m.list.Keys()
+}
+
+func (m *Values) GetIterator() iter.Seq2[string, any] {
+	return m.list.AllFromFront()
 }
